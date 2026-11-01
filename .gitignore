@@ -1,0 +1,7 @@
+# CMake and TeX intermediate files
+build/
+*.aux
+*.log
+*.out
+
+# Temporary package staging directory is outside this repository.

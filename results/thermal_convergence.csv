@@ -1,0 +1,5 @@
+elements,nodes,max_midpoint_absolute_error_C
+10,11,1.25
+20,21,0.3125
+40,41,0.0781250000003
+80,81,0.019531250001

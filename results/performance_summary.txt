@@ -1,0 +1,9 @@
+SIMULATED THERMAL BATCH BENCHMARK
+seed=20261102; cases=20000; elements=80; warm-up=one unmeasured run per worker count; repetitions=5
+logical CPUs reported by C++=16; workers tested=1..4
+workers,median_compute_ms,speedup,efficiency
+1,54.581,1,1
+2,28.682,1.90297,0.951485
+3,20.047,2.72265,0.907551
+4,17.54,3.1118,0.77795
+Maximum serial-parallel temperature difference: 0 C (same deterministic ordered case set).

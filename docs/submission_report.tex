@@ -1,0 +1,32 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.65in]{geometry}
+\usepackage{booktabs,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\title{Unified Engineering Workbench\\\large Pass Science Works R\&D Internship Submission}
+\author{Candidate ID: \underline{\hspace{2.3in}}}\date{2 November 2026}
+\begin{document}\maketitle
+\textbf{Publishing status:} This local report intentionally has no invented public URL. Before Google Form submission, replace these placeholders with a verified public GitHub repository and Release ZIP URL, click both links from a private browser, and regenerate the PDF.
+
+\section*{Summary and architecture}
+The workbench is an offline C++17 prototype. Its command interface exposes Thermal Analysis, Geometry import, temperature-result import, Performance, Hardware and Backpropagation views. The presentation layer is \texttt{main.cpp}; thermal solving, parsing, parallel benchmark, hardware mock and learning example are separate modules. All numerical computation, file parsing and concurrency are C++17/Win32 API. Results are exported as CSV/text under \texttt{results/}. No network, administrator permission, package installation or first-run compilation is needed for the packaged executable.
+
+\section*{Geometry and result import}
+The program validates ASCII STL facets and a nodal CSV whose exact header is \texttt{node\_id,x\_m,y\_m,z\_m,temperature\_C}. It rejects empty files, incomplete triangles, unexpected headers and non-finite values. The tested input limits are 1,000,000 STL lines and 1,000,000 nodes. Included samples are self-created: \texttt{example\_ascii.stl} (one triangle, source units) and \texttt{synthetic\_temperature\_nodes.csv} (metres/Celsius; synthetic, not an ANSYS export). The console reports parsed item count and units. Interactive 3D rotation/pan/zoom and colour rendering remain a limitation.
+
+\section*{Thermal FEA verification}
+The uniform, insulated 1D rod uses $L=1$ m, $A=10^{-4}$ m$^2$, $k=10$ W/(m K), $q=10000$ W/m$^3$, $T(0)=100$ C and $T(L)=20$ C. Each two-node linear element contributes $kA/h[1,-1;-1,1]$ and $qAh/2[1,1]$; both prescribed endpoints are eliminated into the internal tridiagonal system. The analytical comparison is $T=100-80x/L+q x(L-x)/(2k)$.
+
+\begin{center}\begin{tabular}{rrrr}\toprule Elements&Nodes&Maximum midpoint error (C)&Ratio to prior\\\midrule 10&11&1.25&--\\20&21&0.3125&4.00\\40&41&0.078125&4.00\\80&81&0.01953125&4.00\\\bottomrule\end{tabular}\end{center}
+The error is evaluated at element midpoints using FE interpolation, rather than only at nodes. A useful debug observation is that the nodal values reproduce the quadratic analytical field at uniform nodes while linear midpoint interpolation does not. Raw curves and convergence data are exported in the thermal CSV files.
+
+\section*{Parallel performance}
+Independent cases use seed 20261102 with positive random $k$ and $q$, 80 elements, one warm-up and five timed repetitions. The executing machine reported 16 logical CPUs; workers are capped at four. Compilation used MinGW g++ 6.3.0 with \texttt{-std=c++17 -O2 -Wall -Wextra -Wpedantic}. For 20,000 cases, the measured median times were: 1 worker 54.581 ms, 2 workers 28.682 ms (1.903x, 95.1\%), 3 workers 20.047 ms (2.723x, 90.8\%), 4 workers 17.540 ms (3.112x, 77.8\%). Serial/parallel maximum temperature difference was 0 C. File I/O and rendering are excluded. Physical-core/RAM and launch-to-ready measurements should be added from the final submission machine.
+
+\section*{Embedded and backpropagation}
+The hardware view is explicitly simulated: MCU, FPGA and JTAG adapter discovery, capabilities, connection, telemetry and disconnect are demonstrated, with a recoverable FPGA timeout. The design documents distinct USB, voltage-domain, grounding and JTAG signal ownership assumptions; JTAG is debug transport, not a generic compute board.
+
+For $x=1,y=2$, $h=\tanh(wx+b)$, $\hat y=vh+c$, and $J=0.5(\hat y-y)^2$, initial $(w,b,v,c)=(.5,0,1,0)$ gives loss 1.18254. Analytical gradients are $(-1.20946,-1.20946,-.710682,-1.53788)$. Central differences with $\epsilon=10^{-6}$ have maximum absolute error $4.61\times10^{-11}$; simultaneous learning-rate-0.1 updates generate 100 loss samples. The handwritten derivation belongs in the allowed two-page appendix.
+
+\section*{Test evidence, limitations and ownership}
+The verified \texttt{Launch.exe test} run passed the boundary/midpoint-convergence tests and valid STL/CSV plus malformed-NaN rejection. \texttt{Launch.exe all 200 40} completed every module. The largest remaining limitations are console-only UI, no interactive 3D/plots, no physical hardware and no verified public upload. Source and sample data are self-created; standard CMake/MinGW libraries are used. AI assistance, challenge test and required candidate review are disclosed in \texttt{docs/AI\_USE\_LOG.md}. I certify that I understand and own my edits and will disclose any reused material.
+\end{document}

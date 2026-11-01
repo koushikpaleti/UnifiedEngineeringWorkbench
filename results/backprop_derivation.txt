@@ -1,0 +1,7 @@
+x=1, target=2; h=tanh(wx+b); yhat=vh+c; J=0.5(yhat-y)^2
+initial w=0.5,b=0,v=1,c=0, learning rate=0.1
+initial loss=1.18254
+gradients: dJ/dw=-1.20946, dJ/db=-1.20946, dJ/dv=-0.710682, dJ/dc=-1.53788
+central finite differences epsilon=1e-6 absolute errors: 1.53427e-013,1.53427e-013,2.32236e-012,4.60521e-011
+chain rule: dJ/dyhat=e; dJ/dv=e*h; dJ/dc=e; dJ/dw=e*v*(1-h^2)*x; dJ/db=e*v*(1-h^2).
+All four parameters update simultaneously from the original gradients.

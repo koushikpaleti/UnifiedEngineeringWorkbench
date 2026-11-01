@@ -1,0 +1,14 @@
+SIMULATION ONLY - no physical devices are controlled.
+DISCOVERY
+Microcontroller: STM32-style development board | capabilities: USB serial, GPIO, ADC, SWD
+connect: success
+telemetry: SIMULATED telemetry: voltage=3.30 V, status=healthy
+disconnect: success
+FPGA: Artix-7-style evaluation board | capabilities: USB JTAG, bitstream configuration, GPIO
+connect: success
+telemetry: timeout after 500 ms; disconnected safely; retry permitted
+disconnect: success
+JTAG debugger: CMSIS-DAP-style adapter | capabilities: SWD/JTAG debug transport only
+connect: success
+telemetry: SIMULATED telemetry: voltage=3.30 V, status=healthy
+disconnect: success
